@@ -12,20 +12,19 @@ st.subheader("Powered by GreenHome")
 
 "---"
 # Set the header of the tool
-st.header("Let's get started! :bulb: ")
-st.header('Find your energy label with ease!')
-
-# Give a discription of the energy label
-st.subheader('Enter your address and get your energy label, expiration date, type of house and house area. ')
+st.header("Step 1: Find your energy label with ease!")
 
 # Add a expander to explain this step in the quick scan tool
 with st.expander("See explanation of the energy label"):
     st.write("The chart above shows some numbers I picked for you. I rolled actual dice for these, so they're *guaranteed* to be random.")
 
-st.info('You can also choose to upload your energy label to add to the quick scan', icon="ℹ️")
+# Give a discription of the energy label
+st.write('Enter your address and get your energy label, expiration date, type of house and house area. ')
+
+st.image('images/upload-energylabel.png')
 
 # Create a file uploader widget
-uploaded_file = st.file_uploader("upload your energy label here", type=["png", "jpg", "jpeg", "pdf"])
+uploaded_file = st.file_uploader("Upload here", type=["png", "jpg", "jpeg", "pdf"])
 
 # Show the image if a file was uploaded
 if uploaded_file is not None:
@@ -78,7 +77,7 @@ if huisnummertoevoeging:
 
 # Check if the required parameters are not empty and the optional parameters are valid
 if postcode and huisnummer and valid_huisletter and valid_huisnummertoevoeging:
-    st.success("You can go to the next step")
+    st.success("Your input is saved! You can go to the next step.")
 
 # Set up the year of built select box
 year_of_built = st.selectbox("Select the year of built:", ["Till 1919", "1920-1945", "1946-1964", "1965-1974", "1975-1991", "1992-2005", "2006-2014", "2015-now"])
