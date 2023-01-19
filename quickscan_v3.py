@@ -490,10 +490,14 @@ with st.container():
     else:
             st.error('Please fill in all the required input boxes and select boxes')
 
+    st.info("You can ignore this error. When you click on click here to see your summary, it wil disappear.")
     # Check if all the input boxes and select boxes are filled
     if all(var is not None and var != "" for var in input_select_vars):
         st.text(summary)
+
+        # Download summary
         st.download_button("Download summary", file_name="summary-of-my-home.txt", data=summary)
+
 
 
 
