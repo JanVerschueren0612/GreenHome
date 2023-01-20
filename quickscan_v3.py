@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 import re
 
+
 # Set the title of the app
 st.title('Quick Scan :house:')
 
@@ -266,21 +267,23 @@ with st.container():
 
 
     # Add a select box for the type of floor insulation
-    floor_insulation = st.selectbox("Select the type of floor insulation you have:", options[year_of_built]["floor_insulation"])
     with st.expander("Info about floor insulation"):
         st.write("- You can find information about your floor insulation on this site: https://www.milieucentraal.nl/energie-besparen/isoleren-en-besparen/vloerisolatie/")
+    floor_insulation = st.selectbox("Select the type of floor insulation you have:", options[year_of_built]["floor_insulation"])
+
 
     # Check the value of roof_type and display the select box for the type of flat roof insulation if "flat" or "flat and slanted" is selected
+    with st.expander("Info about roof insulation"):
+          st.write("- You can find information about your floor insulation on this site: https://www.milieucentraal.nl/media/zebh5elt/hoe-check-ik-mijn-dakisolatie.pdf")
     if roof_type in ["Flat", "Flat and slanted"]:
         flat_roof_insulation = st.selectbox("Select the type of flat roof insulation you have:", options[year_of_built]["flat_roof_insulation"])
-        with st.expander("Info about roof insulation"):
-            st.write("- You can find information about your floor insulation on this site: https://www.milieucentraal.nl/media/zebh5elt/hoe-check-ik-mijn-dakisolatie.pdf")
+
 
     # Check the value of roof_type and display the select box for the type of slanted roof insulation if "slanted" is selected
+    with st.expander("Info about roof insulation"):
+        st.write("- You can find information about your floor insulation on this site: https://www.milieucentraal.nl/media/zebh5elt/hoe-check-ik-mijn-dakisolatie.pdf")
     if roof_type in ["Slanted", "Flat and slanted"]:
         slanted_roof_insulation = st.selectbox("Select the type of slanted roof insulation you have:", options[year_of_built]["slanted_roof_insulation"])
-        with st.expander("Info about roof insulation"):
-            st.write("- You can find information about your floor insulation on this site: https://www.milieucentraal.nl/media/zebh5elt/hoe-check-ik-mijn-dakisolatie.pdf")
 
     st.header("Windows")
     # Add a expander to explain this step in the quick scan tool
@@ -395,7 +398,19 @@ with st.container():
         st.write("- We want to know your motivation and budget to give personal recommendation to improve your house")
     
     # Add a select box for the motivation to save energy
-    motivation = st.selectbox("Select the motivation to save energy:", ["I want to save money", "I want to save energy", "I want to save the environment", "I want a better energie label", "I want to save money and energy", "I want to save money and the environment", "I want to save energy and the environment", "I want to save money, energy and the environment"])
+    motivation = st.selectbox("Select the motivation to save energy:", [
+        "I want to save money", 
+        "I want to save energy", 
+        "I want to save the environment", 
+        "I want a better energy label", 
+        "I want to save money and energy", 
+        "I want to save money and have a better energy label",
+        "I want to save energy and have a better energy label",
+        "I want to save money, energy and have a better energy label",
+        "I want to have a better energy label and save the environment",
+        "I want to save money and the environment", 
+        "I want to save energy and the environment", 
+        "I want to save money, energy and the environment"])
 
     # Add a select box for the budget to invest
     budget = st.number_input("What is your budget to start with", min_value=0.0, max_value=1000000.0, value=500.0, step=0.1)
@@ -443,8 +458,10 @@ with st.container():
                 summary += "- Roof type is: " + roof_type + "\n"
                 if roof_type in ["Flat", "Flat and slanted"]:
                     summary += "- Flat roof insulation is: " + flat_roof_insulation + "\n"
+                    summary += "- Flat roof area is: " + flat_roof_area + "\n"
                 if roof_type in ["Slanted", "Flat and slanted"]:
                     summary += "- Slanted roof insulation is: " + slanted_roof_insulation + "\n"
+                    summary += "- Slanted roof area is: " + slanted_roof_area + "\n"
                 summary += "- Wall insulation is: " + wall_insulation + "\n"
                 summary += "- Floor insulation is: " + floor_insulation + "\n"
                 summary += "- Window type for living spaces is: " + window_type_living + "\n"
@@ -468,25 +485,7 @@ with st.container():
                     summary += "- You have a shower with heat recovery\n"
                 summary += "- Your motivation is: " + motivation + "\n"
                 summary += "- Your budget is: €" + str(budget) + "\n"
-            # if data.get('labelLetter') is None:
-                # input_select_vars1 = [postcode, huisnummer, home_type, area, year_of_built, wall_insulation, floor_insulation, flat_roof_insulation, roof_type, window_type_bedrooms, heating_system, ventilation_type]
-                # if all(var is not None and var != "" for var in input_select_vars1):
-                #     summary = "- Postcode is: " + postcode + "\n"
-                #     summary += "- Huisnummer is: " + huisnummer + "\n"
-                #     summary += "- Year of built is: " + year_of_built + "\n"
-                #     summary += "- Your house type is: " + building_type + "\n"
-                #     summary += "- The area of your house is: " + str(building_area) + " m2\n"
-                #     summary += "- Roof type is: " + roof_type + "\n"
-                #     if roof_type in ["Flat", "Flat and slanted"]:
-                #         summary += "- Flat roof insulation is: " + flat_roof_insulation + "\n"
-                #     if roof_type in ["Slanted", "Flat and slanted"]:
-                #         summary += "- Slanted roof insulation is: " + slanted_roof_insulation + "\n"
-                #     summary += "- Wall insulation is: " + wall_insulation + "\n"
-                #     summary += "- Floor insulation is: " + floor_insulation + "\n"
-                #     summary += "- Window type for living spaces is: " + window_type_living + "\n"
-                #     summary += "- Window type for bedrooms is: " + window_type_bedrooms + "\n"
-                #     summary += "- Heating system is: " + heating_system + "\n"
-                #     summary += "- Ventilation type is: " + ventilation_type + "\n"
+
     else:
             st.error('Please fill in all the required input boxes and select boxes')
 
@@ -494,9 +493,15 @@ with st.container():
     # Check if all the input boxes and select boxes are filled
     if all(var is not None and var != "" for var in input_select_vars):
         st.text(summary)
+        
+        # Get the current time and date
+        now = datetime.now()
 
+        # Format the date and time string as "yyyy-mm-dd"
+        date_time = now.strftime("%d-%m-%Y")
+        
         # Download summary
-        st.download_button("Download summary", file_name="summary-of-my-home.txt", data=summary)
+        st.download_button("Download summary", file_name= date_time + "_summary-of-my-home.txt", data=summary)
 
 
 
